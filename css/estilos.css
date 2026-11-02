@@ -420,11 +420,10 @@ body {
 
 
 /* =========================================
-   NUEVO: INTRO CON MAGIA (libro cerrado -> magia -> libro abierto)
+   NUEVO: INTRO CON MAGIA (libro cerrado -> magia -> libro abierto -> invitación)
    Va al final para sobrescribir lo anterior
    ========================================= */
 
-/* Fondo verde oscuro en la portada y en el libro abierto */
 .sobre {
     background: #04140d;
 }
@@ -433,35 +432,167 @@ body {
     background: #04140d;
 }
 
-/* El libro cerrado queda por encima de la magia */
+/* ---------- Libro cerrado ---------- */
 .sobre-imagen {
     position: relative;
     z-index: 1;
 }
 
-/* Imagen de la magia: oculta al inicio */
+.sobre-imagen.brilla {
+    animation: brilloLibro 3s ease-in-out forwards;
+}
+
+@keyframes brilloLibro {
+    0% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 0 rgba(255, 210, 120, 0)) brightness(1);
+    }
+    60% {
+        transform: translateY(-10px) scale(1.03);
+        filter: drop-shadow(0 0 25px rgba(255, 210, 120, 0.9)) brightness(1.25);
+    }
+    100% {
+        transform: translateY(-14px) scale(1.06);
+        filter: drop-shadow(0 0 45px rgba(255, 220, 140, 1)) brightness(1.5);
+    }
+}
+
+/* ---------- Magia: remolino que termina ocupando toda la pantalla ---------- */
 .magia-img {
     position: absolute;
-    z-index: 0;
+    z-index: 2;
 
-    width: 100vw;
+    width: 120vw;
     max-width: none;
-    max-height: 95dvh;
+    max-height: 100dvh;
     object-fit: contain;
 
+    mix-blend-mode: screen;
+
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%);
+
     opacity: 0;
-    transform: scale(0.4);
+    transform: scale(0.2) rotate(-120deg);
     pointer-events: none;
-
-    transition:
-        opacity 1.6s ease,
-        transform 2.4s ease;
 }
 
-/* Cuando aparece la magia */
 .magia-img.on {
-    opacity: 1;
-    transform: scale(1);
+    animation: magiaEntra 3s cubic-bezier(.35, .1, .5, 1) forwards;
 }
 
+@keyframes magiaEntra {
+    0% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-120deg);
+    }
+    30% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.1) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(3.8) rotate(25deg);   /* llena toda la pantalla */
+    }
+}
 
+/* ---------- Destello dorado que cubre la pantalla ---------- */
+.sobre::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    background: radial-gradient(circle at center, #fff6d6 0%, #ffe19a 45%, #ffd070 100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sobre.destello::after {
+    animation: flashEntra 0.7s ease-in forwards;
+}
+
+@keyframes flashEntra {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ---------- Libro abierto: entra desde el destello dorado ---------- */
+#nota-biblica.mostrar {
+    animation: fondoNota 1.6s ease-out forwards;
+}
+
+@keyframes fondoNota {
+    from { background: #ffe7a8; }
+    to   { background: #04140d; }
+}
+
+#nota-biblica.mostrar .nota-imagen {
+    animation: libroEntra 1.8s cubic-bezier(.2, .7, .3, 1) both;
+}
+
+@keyframes libroEntra {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) rotate(-3deg);
+        filter: blur(14px) brightness(2.2);
+    }
+    60% {
+        opacity: 1;
+        filter: blur(2px) brightness(1.3);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0) brightness(1);
+    }
+}
+
+/* ---------- Libro abierto: salida hacia la invitación ---------- */
+#nota-biblica.mostrar.saliendo {
+    animation: notaSale 1.5s ease-in forwards;
+}
+
+@keyframes notaSale {
+    0%   { background: #04140d; opacity: 1; }
+    45%  { background: #ffe7a8; opacity: 1; }
+    100% { background: #ffe7a8; opacity: 0; }
+}
+
+#nota-biblica.mostrar.saliendo .nota-imagen {
+    animation: libroSale 1s ease-in forwards;
+}
+
+@keyframes libroSale {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0) brightness(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+        filter: blur(8px) brightness(2.5);
+    }
+}
+
+/* ---------- Invitación: aparece de borrosa a nítida ---------- */
+.invitacion.mostrar {
+    display: block;
+    animation: invitacionEntra 1.8s cubic-bezier(.2, .7, .3, 1) backwards;
+}
+
+@keyframes invitacionEntra {
+    from {
+        opacity: 0;
+        transform: scale(1.08);
+        filter: blur(10px) brightness(1.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: none;
+    }
+}

@@ -88,7 +88,8 @@ if (imagenInvitacion) {
 const sobre = document.getElementById("sobre");
 const notaBiblica = document.getElementById("nota-biblica");
 const invitacionCard = document.querySelector(".invitacion");
-const magia = document.getElementById("magia");   // NUEVO
+const magia = document.getElementById("magia");
+const libroCerrado = document.querySelector(".sobre-imagen");
 
 if (sobre && notaBiblica && invitacionCard) {
     sobre.addEventListener("click", function () {
@@ -100,39 +101,42 @@ if (sobre && notaBiblica && invitacionCard) {
 
         sobre.classList.add("abriendo");
 
-        // NUEVO: primero aparece la magia (el libro cerrado sigue visible)
-        if (magia) {
-            magia.classList.add("on");
-        }
+        // 1) La magia entra girando y el libro cerrado brilla
+        if (magia) magia.classList.add("on");
+        if (libroCerrado) libroCerrado.classList.add("brilla");
 
-        // NUEVO: esperar 2.5 segundos con la magia antes de abrir el libro
+        // 2) Cuando la magia llena la pantalla, destello dorado
         setTimeout(() => {
+            sobre.classList.add("destello");
+        }, 2400);
 
-            sobre.classList.add("abrir");
+        // 3) Con la pantalla en dorado, aparece el libro abierto
+        setTimeout(() => {
+            sobre.style.display = "none";
 
-            // Esperar a que termine la animación del sobre
+            notaBiblica.classList.remove("oculto");
+            notaBiblica.classList.add("mostrar");
+
+            // 4) Tiempo que se ve el libro abierto
             setTimeout(() => {
-                sobre.style.display = "none";
 
-                // Mostrar la nota bíblica (aquí es el libro abierto)
-                notaBiblica.classList.remove("oculto");
-                notaBiblica.classList.add("mostrar");
+                // 5) El libro abierto se ilumina y se disuelve
+                notaBiblica.classList.add("saliendo");
 
-                // Mantener la nota visible durante 4 segundos
+                // 6) La invitación empieza a aparecer detrás
                 setTimeout(() => {
-                    notaBiblica.classList.remove("mostrar");
-                    notaBiblica.classList.add("oculto");
-
-                    // Mostrar la invitación principal
                     invitacionCard.classList.add("mostrar");
-
-                    // Intentar activar la música tras la interacción
                     iniciarMusica();
+                }, 700);
 
-                }, 5200);
+                // 7) Se quita el libro abierto por completo
+                setTimeout(() => {
+                    notaBiblica.classList.remove("mostrar", "saliendo");
+                    notaBiblica.classList.add("oculto");
+                }, 1500);
 
-            }, 800);
+            }, 5000);
 
-        }, 2500);   // NUEVO: tiempo de la magia (puedes subirlo o bajarlo)
+        }, 3100);
     });
 }
