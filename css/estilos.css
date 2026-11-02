@@ -15,7 +15,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: #ffffff;
+    background: #000000;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
     touch-action: pan-y;
@@ -38,7 +38,7 @@ body {
     justify-content: center;
 
     padding: 15px;
-    background: #f8f2fc;
+    background: #070707;
 }
 
 #nota-biblica.mostrar {
@@ -77,7 +77,7 @@ body {
     height: 100vh;
     height: 100dvh;
 
-    background:#ffffff;
+    background:#0b0b0b;
 
     display: flex;
     justify-content: center;
