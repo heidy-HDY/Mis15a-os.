@@ -88,6 +88,7 @@ if (imagenInvitacion) {
 const sobre = document.getElementById("sobre");
 const notaBiblica = document.getElementById("nota-biblica");
 const invitacionCard = document.querySelector(".invitacion");
+const magia = document.getElementById("magia");   // NUEVO
 
 if (sobre && notaBiblica && invitacionCard) {
     sobre.addEventListener("click", function () {
@@ -98,29 +99,40 @@ if (sobre && notaBiblica && invitacionCard) {
         }
 
         sobre.classList.add("abriendo");
-        sobre.classList.add("abrir");
 
-        // Esperar a que termine la animación del sobre
+        // NUEVO: primero aparece la magia (el libro cerrado sigue visible)
+        if (magia) {
+            magia.classList.add("on");
+        }
+
+        // NUEVO: esperar 2.5 segundos con la magia antes de abrir el libro
         setTimeout(() => {
-            sobre.style.display = "none";
 
-            // Mostrar la nota bíblica
-            notaBiblica.classList.remove("oculto");
-            notaBiblica.classList.add("mostrar");
+            sobre.classList.add("abrir");
 
-            // Mantener la nota visible durante 4 segundos
+            // Esperar a que termine la animación del sobre
             setTimeout(() => {
-                notaBiblica.classList.remove("mostrar");
-                notaBiblica.classList.add("oculto");
+                sobre.style.display = "none";
 
-                // Mostrar la invitación principal
-                invitacionCard.classList.add("mostrar");
+                // Mostrar la nota bíblica (aquí es el libro abierto)
+                notaBiblica.classList.remove("oculto");
+                notaBiblica.classList.add("mostrar");
 
-                // Intentar activar la música tras la interacción
-                iniciarMusica();
+                // Mantener la nota visible durante 4 segundos
+                setTimeout(() => {
+                    notaBiblica.classList.remove("mostrar");
+                    notaBiblica.classList.add("oculto");
 
-            }, 5200);
+                    // Mostrar la invitación principal
+                    invitacionCard.classList.add("mostrar");
 
-        }, 800);
+                    // Intentar activar la música tras la interacción
+                    iniciarMusica();
+
+                }, 5200);
+
+            }, 800);
+
+        }, 2500);   // NUEVO: tiempo de la magia (puedes subirlo o bajarlo)
     });
 }

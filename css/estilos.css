@@ -15,7 +15,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: #000000;
+    background: #ffffff;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
     touch-action: pan-y;
@@ -38,7 +38,7 @@ body {
     justify-content: center;
 
     padding: 15px;
-    background: #070707;
+    background: #f8f2fc;
 }
 
 #nota-biblica.mostrar {
@@ -77,7 +77,7 @@ body {
     height: 100vh;
     height: 100dvh;
 
-    background:#0b0b0b;
+    background:#ffffff;
 
     display: flex;
     justify-content: center;
@@ -417,4 +417,51 @@ body {
     }
 
 }
+
+
+/* =========================================
+   NUEVO: INTRO CON MAGIA (libro cerrado -> magia -> libro abierto)
+   Va al final para sobrescribir lo anterior
+   ========================================= */
+
+/* Fondo verde oscuro en la portada y en el libro abierto */
+.sobre {
+    background: #04140d;
+}
+
+#nota-biblica {
+    background: #04140d;
+}
+
+/* El libro cerrado queda por encima de la magia */
+.sobre-imagen {
+    position: relative;
+    z-index: 1;
+}
+
+/* Imagen de la magia: oculta al inicio */
+.magia-img {
+    position: absolute;
+    z-index: 0;
+
+    width: 100vw;
+    max-width: none;
+    max-height: 95dvh;
+    object-fit: contain;
+
+    opacity: 0;
+    transform: scale(0.4);
+    pointer-events: none;
+
+    transition:
+        opacity 1.6s ease,
+        transform 2.4s ease;
+}
+
+/* Cuando aparece la magia */
+.magia-img.on {
+    opacity: 1;
+    transform: scale(1);
+}
+
 
